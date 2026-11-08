@@ -246,7 +246,18 @@ if (html.includes(oldStatus)) {
 }
 
 /* ------------------------------------------------------------------ *
- * 7. 写入产物
+ * 7. 添加 favicon（避免浏览器请求 /favicon.ico 时 404）
+ * ------------------------------------------------------------------ */
+if (!html.includes('rel="icon"')) {
+  html = html.replace(
+    '<meta name="viewport"',
+    '<link rel="icon" type="image/png" href="assets/favicon.png">\n<meta name="viewport"',
+  );
+  log('已添加 favicon 引用');
+}
+
+/* ------------------------------------------------------------------ *
+ * 8. 写入产物
  * ------------------------------------------------------------------ */
 fs.writeFileSync(OUT, html, 'utf8');
 log(`写入 ${OUT} (${(Buffer.byteLength(html) / 1024).toFixed(1)} KB)`);
